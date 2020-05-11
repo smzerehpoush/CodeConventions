@@ -1,11 +1,10 @@
 package com.mahdiyar.model.dto.user;
 
+import com.mahdiyar.model.base.BaseModel;
 import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.Date;
 
 /**
  * @author mahdiyar
@@ -14,9 +13,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel
-public class UserModel {
-    private String id;
-    private Date creationDate;
+public class UserModel extends BaseModel {
     private String firstName;
     private String lastName;
     private String username;
