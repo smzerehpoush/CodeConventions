@@ -67,13 +67,13 @@ public class UserController {
 
 tips : 
  - base url of apis must start with a version like /v1
- - service must be an interface and autowired by Spring Dependency injector and you should use @RequiredArgsConstructor annotation to provide suitable constructor for spring to autorwire beans.
- - id of users must be passes in path variables with @PathVariable("id")
- - your entities may have an id with a numerical long value and another uniqueId with UUID value.
+ - service must be an interface and autowired by Spring Dependency injector and you should use ```@RequiredArgsConstructor ``` annotation to provide suitable constructor for spring to autorwire beans.
+ - id of users must be passes in path variables with ```@PathVariable("id")```
+ - your entities may have an id with a numerical long value and another uniqueId with ```UUID``` value.
 you must pass these uniqueIds to your client and numerical id must be used in intersystem operations
 
 ## how to choose HttpMethod ?
- - if you want to read or query items in application you should use GET methods and filters must be passed in query params with @RequestParam. params may be optional and you can specify thme in annotation and give them a default value.
- - if you want to update an existing entity on application, you should choose PUT methods and items to be changed must be placed in request body and unique id of existsing entity in path param with @PathVariable
-- if you want to delete/disable an item, you should choose DELETE method and pass unique id in path param with @PathVariable
- - if you want to create an entity or do something that is not in operations list up, you should use POST method.
+ - if you want to read or query items in application you should use ```GET``` methods and filters must be passed in query params with ```@RequestParam.``` params may be optional and you can specify thme in annotation and give them a default value.
+ - if you want to update an existing entity on application, you should choose ```PUT``` methods and items to be changed must be placed in request body and unique id of existsing entity in path param with ```@PathVariable```
+- if you want to delete/disable an item, you should choose ```DELETE``` method and pass unique id in path param with ```@PathVariable```
+ - if you want to create an entity or do something that is not in operations list up, you should use ```POST``` method.
