@@ -1,4 +1,12 @@
-# RESTFul API Design
+# Farazpardazan RESTFul API Design Strategy
+
+This document represents Farazpardazan restful api design strategy. It provides a brief overview of how we design our restful apis and provide them to our clients.
+
+## Table of content
+ - What is the purpose of this document?
+ - How to choose Http Methods ?
+ - How to choose Http Statuses ?
+
 
 assueme that we have a controller for our users with basic CRUD operations.
 let's create UserController .
