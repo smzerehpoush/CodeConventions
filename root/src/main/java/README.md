@@ -2,7 +2,7 @@
 
 ## Codebase must be here
 
-## we have a structure show bello
+## we have a structure shown bellow
 
 - controller
 - service
