@@ -22,5 +22,4 @@ public class UserEntity {
     private Long id;
     @Column(name = "unique_id")
     private String uniqueId = UUID.randomUUID().toString();
-    @Column
 }
