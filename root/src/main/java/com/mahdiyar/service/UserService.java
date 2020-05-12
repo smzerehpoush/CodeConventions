@@ -1,9 +1,9 @@
 package com.mahdiyar.service;
 
-import com.mahdiyar.model.entities.UserEntity;
 import com.mahdiyar.model.dto.user.UserModel;
 import com.mahdiyar.model.dto.user.request.CreateUserRequestDto;
 import com.mahdiyar.model.dto.user.request.UpdateUserRequestDto;
+import com.mahdiyar.model.entities.UserEntity;
 import com.mahdiyar.model.general.PagedQuery;
 import com.mahdiyar.model.general.PagedQueryResponse;
 import com.mahdiyar.repository.UserRepository;
@@ -20,6 +20,8 @@ public class UserService {
 
     public UserModel create(CreateUserRequestDto requestDto) {
         UserEntity userEntity = new UserEntity();
+        userEntity = userRepository.save(userEntity);
+        return new UserModel();
     }
 
     public PagedQueryResponse<UserModel> read(PagedQuery pagedQuery) {
