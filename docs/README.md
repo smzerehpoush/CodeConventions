@@ -9,8 +9,11 @@
       - [GET]()
       - [POST]()
       - [PUT]()
+      - [PATCH]()
       - [DELETE]()
+      - [HEAD]()
       - [OPTIONS]()
+    - [HTTP Status Codes]()
  - [How to choose Http Methods ?]()
  - [How to choose returning Http Status code ?]()
  - [Restful API Design]()
@@ -101,3 +104,60 @@ OPTIONS request should return data describing what other methods and operations 
 
 OPTIONS requests are more loosely defined and used than the others, making them a good candidate to test for fatal API errors. If an API isn't expecting an OPTIONS request, it's good to put a test case in place that verifies failing behavior.
 
+### HTTP Status Codes
+  Http Status codes are issued by a server in response to a client's request made to the server.
+  HTTP response status codes indicate whether a specific HTTP request has been successfully completed. Responses are grouped in five classes:
+
+ - Informational responses 1XX
+ - Successful responses 2XX
+ - Redirects 3XX
+ - Client errors 4XX
+ - Server errors 5XX
+ By convention we use these Http status codes in our project and other codes are invalid.
+ 
+ we do not use any of 1XX response codes.
+ 
+ #### Successful responses
+ in rage of 2XX we use these codes : 200
+ #### 200 OK
+  The request has succeeded. The meaning of the success depends on the HTTP method:
+  - GET: The resource has been fetched and is transmitted in the message body.
+  - HEAD: The entity headers are in the message body.
+  - PUT or POST: The resource describing the result of the action is transmitted in the message body.
+#### Redirection messages
+  in range of 3XX we use these codes : 302
+  #### 302 Found
+This response code means that the URI of requested resource has been changed temporarily. Further changes in the URI might be made in the future. Therefore, this same URI should be used by the client in future requests.
+
+#### Client error responses
+in range of 4XXX we use these codes : 400, 401, 403, 404, 429
+
+#### 400 Bad Request
+The server could not understand the request due to invalid syntax.
+
+#### 401 Unauthorized
+Although the HTTP standard specifies "unauthorized", semantically this response means "unauthenticated". That is, the client must authenticate itself to get the requested response.
+
+#### 403 Forbidden
+The client does not have access rights to the content; that is, it is unauthorized, so the server is refusing to give the requested resource. Unlike 401, the client's identity is known to the server.
+
+#### 404 Not Found
+The server can not find the requested resource. In the browser, this means the URL is not recognized. In an API, this can also mean that the endpoint is valid but the resource itself does not exist. Servers may also send this response instead of 403 to hide the existence of a resource from an unauthorized client. This response code is probably the most famous one due to its frequent occurrence on the web.
+
+#### 405 Method Not Allowed
+The request method is known by the server but has been disabled and cannot be used. For example, an API may forbid DELETE-ing a resource. The two mandatory methods, GET and HEAD, must never be disabled and should not return this error code.
+
+#### 429 Too Many Requests
+The user has sent too many requests in a given amount of time ("rate limiting").
+
+note that we can not return any code of range 5XX explicitly. some error codes may be throw by web server like 502 , or 504
+
+#### 500 Internal Server Error
+The server has encountered a situation it doesn't know how to handle.
+
+#### 502 Bad Gateway
+This error response means that the server, while working as a gateway to get a response needed to handle the request, got an invalid response.
+#### 503 Service Unavailable
+The server is not ready to handle the request. Common causes are a server that is down for maintenance or that is overloaded. Note that together with this response, a user-friendly page explaining the problem should be sent. This responses should be used for temporary conditions and the Retry-After: HTTP header should, if possible, contain the estimated time before the recovery of the service. The webmaster must also take care about the caching-related headers that are sent along with this response, as these temporary condition responses should usually not be cached.
+#### 504 Gateway Timeout
+This error response is given when the server is acting as a gateway and cannot get a response in time.
