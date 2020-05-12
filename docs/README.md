@@ -14,6 +14,11 @@
       - [HEAD]()
       - [OPTIONS]()
     - [HTTP Status Codes]()
+      - [1xx Informational]()
+      - [2xx Success]()
+      - [3xx Redirection]()
+      - [4xx Client Error]()
+      - [5xx Server Error]()
  - [How to choose Http Methods ?]()
  - [How to choose returning Http Status code ?]()
  - [Restful API Design]()
@@ -103,6 +108,7 @@ HEAD requests are useful for checking what a GET request will return before actu
 OPTIONS request should return data describing what other methods and operations the server supports at the given URL.
 
 OPTIONS requests are more loosely defined and used than the others, making them a good candidate to test for fatal API errors. If an API isn't expecting an OPTIONS request, it's good to put a test case in place that verifies failing behavior.
+#### notes : by convention we use only GET, POST, PUT, DELETE, PATCH
 
 ### HTTP Status Codes
   Http Status codes are issued by a server in response to a client's request made to the server.
@@ -115,21 +121,22 @@ OPTIONS requests are more loosely defined and used than the others, making them 
  - Server errors 5XX
  By convention we use these Http status codes in our project and other codes are invalid.
  
- we do not use any of 1XX response codes.
+### 1xx Informational
+we do not use any of 1XX response codes.
  
- #### Successful responses
+### 2xx Success
  in rage of 2XX we use these codes : 200
  #### 200 OK
   The request has succeeded. The meaning of the success depends on the HTTP method:
   - GET: The resource has been fetched and is transmitted in the message body.
   - HEAD: The entity headers are in the message body.
   - PUT or POST: The resource describing the result of the action is transmitted in the message body.
-#### Redirection messages
+### 3xx Redirection
   in range of 3XX we use these codes : 302
   #### 302 Found
 This response code means that the URI of requested resource has been changed temporarily. Further changes in the URI might be made in the future. Therefore, this same URI should be used by the client in future requests.
 
-#### Client error responses
+### 4xx Client Error
 in range of 4XXX we use these codes : 400, 401, 403, 404, 429
 
 #### 400 Bad Request
@@ -150,6 +157,7 @@ The request method is known by the server but has been disabled and cannot be us
 #### 429 Too Many Requests
 The user has sent too many requests in a given amount of time ("rate limiting").
 
+### 5xx Server Error
 note that we can not return any code of range 5XX explicitly. some error codes may be throw by web server like 502 , or 504
 
 #### 500 Internal Server Error
