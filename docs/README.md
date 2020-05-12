@@ -2,13 +2,18 @@
 
 
 ## Table of content
- - (What is the purpose of this document?)[]
- - (introduction to HTTP protocol and REST)[]
-    - HTTP basics
-    - Request Methods
- - (How to choose Http Methods ?)[]
- - (How to choose returning Http Status code ?)[]
- - (Restful API Design)[]
+ - [What is the purpose of this document?]()
+ - [introduction to HTTP protocol and REST]()
+    - [HTTP basics]()
+    - [Request Methods]()
+      - [GET]()
+      - [POST]()
+      - [PUT]()
+      - [DELETE]()
+      - [OPTIONS]()
+ - [How to choose Http Methods ?]()
+ - [How to choose returning Http Status code ?]()
+ - [Restful API Design]()
 
 ### What is the purpose of this document ?
 
@@ -27,29 +32,13 @@ The Hypertext Transfer Protocol (HTTP) is a stateless application-
    request messages to communicate specific intentions, examines
    received responses to see if the intentions were carried out, and
    determines how to interpret the results. 
-
-   HTTP provides a uniform interface for interacting with a resource,
-   regardless of its type, nature, or implementation, via
-   the manipulation and transfer of representations.
-
-   HTTP semantics include the intentions defined by each request method,
-   extensions to those semantics that might be described in
-   request header fields , the meaning of status codes to
-   indicate a machine-readable response , and the meaning of
-   other control data and resource metadata that might be given in
-   response header fields .
-
-   This document also defines representation metadata that describe how
-   a payload is intended to be interpreted by a recipient, the request
-   header fields that might influence content selection, and the various
-   selection algorithms that are collectively referred to as "content 
-   negotiation".
+   
 ### Request Methods
    This specification defines a number of standardized methods that are
    commonly used in HTTP, as outlined by the following table.  By
    convention, standardized methods are defined in all-uppercase
    US-ASCII letters.
-
+```
    +---------+-------------------------------------------------+-------+
    | Method  | Description                                     | Sec.  |
    +---------+-------------------------------------------------+-------+
@@ -70,72 +59,45 @@ The Hypertext Transfer Protocol (HTTP) is a stateless application-
    | TRACE   | Perform a message loop-back test along the path | 4.3.8 |
    |         | to the target resource.                         |       |
    +---------+-------------------------------------------------+-------+
-assueme that we have a controller for our users with basic CRUD operations.
-let's create UserController .
-
-```java
-
-
-/**
- * @author name of auther of class
- */
-
-@Api(value = "Users Controller")
-@RestController
-@RequestMapping("/api/v1/users")
-@RequiredArgsConstructor
-public class UserController {
-    private final UserService userService;
-
-    @ApiOperation("Create User")
-    @PostMapping
-    public ResponseEntity<UserModel> create(CreateUserRequestDto requestDto) {
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(userService.create(requestDto));
-    }
-
-    @ApiOperation("Read Users")
-    @GetMapping
-    public ResponseEntity<PagedQueryResponse<UserModel>> read(PagedQuery pagedQuery) {
-        return ResponseEntity.ok(userService.read(pagedQuery));
-    }
-
-    @ApiOperation("Read User")
-    @GetMapping("/{id}")
-    public ResponseEntity<UserModel> read(@PathVariable("id") String id) {
-        return ResponseEntity.ok(userService.read(id));
-    }
-
-    @ApiOperation("Update User")
-    @PutMapping("/{id}")
-    public ResponseEntity<UserModel> update(
-            @PathVariable("id") String id,
-            @RequestBody UpdateUserRequestDto requestDto) {
-        return ResponseEntity.ok(userService.update(id, requestDto));
-    }
-
-    @ApiOperation("Delete User")
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable("id") String id) {
-        userService.delete(id);
-        return ResponseEntity
-                .status(HttpStatus.NO_CONTENT)
-                .build();
-    }
-
-}
 ```
+#### GET
 
-tips : 
- - base url of apis must start with a version like /v1
- - service must be an interface and autowired by Spring Dependency injector and you should use ```@RequiredArgsConstructor ``` annotation to provide suitable constructor for spring to autorwire beans.
- - id of users must be passes in path variables with ```@PathVariable("id")```
- - your entities may have an id with a numerical long value and another uniqueId with ```UUID``` value.
-you must pass these uniqueIds to your client and numerical id must be used in intersystem operations
+GET requests are the most common and widely used methods in APIs and websites. Simply put, the GET method is used to retreive data from a server at the specified resource. For example, say you have an API with a /users endpoint. Making a GET request to that endpoint should return a list of all available users.
 
-## how to choose HttpMethod ?
- - if you want to read or query items in application you should use ```GET``` methods and filters must be passed in query params with ```@RequestParam.``` params may be optional and you can specify thme in annotation and give them a default value.
- - if you want to update an existing entity on application, you should choose ```PUT``` methods and items to be changed must be placed in request body and unique id of existsing entity in path param with ```@PathVariable```
-- if you want to delete/disable an item, you should choose ```DELETE``` method and pass unique id in path param with ```@PathVariable```
- - if you want to create an entity or do something that is not in operations list up, you should use ```POST``` method.
+Since a GET request is only requesting data and not modifying any resources, it's considered a safe and idempotent method.   example request URLs
+    - GET http://127.0.0.1:8081/api/v1/users
+    - GET http://127.0.0.1:8081/api/v1/users?page=0&size=20
+    - GET http://127.0.0.1:8081/api/v1/users/123/courses
+    
+
+#### POST
+In web services, POST requests are used to send data to the API server to create or update a resource. The data sent to the server is stored in the request body of the HTTP request.
+
+The simplest example is a contact form on a website. When you fill out the inputs in a form and hit Send, that data is put in the request body and sent to the server. This may be JSON or query parameters (there's plenty of other formats, but these are the most common)(here we use JSON format for request body and Query Params for simple filters).
+
+It's worth noting that a POST request is non-idempotent. It mutates data on the backend server (by creating or updating a resource), as opposed to a GET request which does not change any data. Here is a great explanation of idempotentcy.
+
+#### PUT 
+Simlar to POST, PUT requests are used to send data to the API to update a resource. The difference is that PUT requests are idempotent. That is, calling the same PUT request multiple times will always produce the same result. In contrast, calling a POST request repeatedly make have side effects of creating the same resource multiple times
+
+#### PATCH
+A PATCH request is one of the lesser-known HTTP methods, but I'm including it this high in the list since it is similar to POST and PUT. The difference with PATCH is that you only apply partial modifications to the resource.
+
+The difference between PATCH and PUT, is that a PATCH request is non-idempotent (like a POST request).
+
+To expand on partial modification, say you're API has a /users/{{userid}} endpoint, and a user has a username. With a PATCH request, you may only need to send the updated username in the request body - as opposed to POST and PUT which require the full user entity.
+
+#### DELETE
+The DELETE method is exactly as it sounds: delete the resource at the specified URL. This method is one of the more common in RESTful APIs so it's good to know how it works.
+
+If a new user is created with a POST request to /users, and it can be retrieved with a GET request to /users/{{userid}}, then making a DELETE request to /users/{{userid}} will remove that user.
+#### HEAD
+The HEAD method is almost identical to GET, except without the response body. In other words, if GET /users returns a list of users, then HEAD /users will make the same request but won't get back the list of users.
+
+HEAD requests are useful for checking what a GET request will return before actually making a GET request -- like before downloading a large file or response body. [Learn more about HEAD requests on MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/HEAD).
+
+#### OPTIONS
+OPTIONS request should return data describing what other methods and operations the server supports at the given URL.
+
+OPTIONS requests are more loosely defined and used than the others, making them a good candidate to test for fatal API errors. If an API isn't expecting an OPTIONS request, it's good to put a test case in place that verifies failing behavior.
+
