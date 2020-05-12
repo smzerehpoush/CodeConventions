@@ -65,9 +65,9 @@ The Hypertext Transfer Protocol (HTTP) is a stateless application-
 GET requests are the most common and widely used methods in APIs and websites. Simply put, the GET method is used to retreive data from a server at the specified resource. For example, say you have an API with a /users endpoint. Making a GET request to that endpoint should return a list of all available users.
 
 Since a GET request is only requesting data and not modifying any resources, it's considered a safe and idempotent method.   example request URLs
-    - GET http://127.0.0.1:8081/api/v1/users
-    - GET http://127.0.0.1:8081/api/v1/users?page=0&size=20
-    - GET http://127.0.0.1:8081/api/v1/users/123/courses
+ - GET http://127.0.0.1:8081/api/v1/users
+ - GET http://127.0.0.1:8081/api/v1/users?page=0&size=20
+ - GET http://127.0.0.1:8081/api/v1/users/123/courses
     
 
 #### POST
