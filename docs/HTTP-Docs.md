@@ -1,4 +1,4 @@
-# Farazpardazan RESTFul API Design Strategy
+# Farazpardazan Introduction to HTTP and REST
 
 
 ## Table of content
@@ -9,47 +9,142 @@
       - [GET]()
       - [POST]()
       - [PUT]()
+      - [PATCH]()
       - [DELETE]()
+      - [HEAD]()
+      - [OPTIONS]()
     - [HTTP Status Codes]()
       - [1xx Informational]()
       - [2xx Success]()
       - [3xx Redirection]()
       - [4xx Client Error]()
       - [5xx Server Error]()
- - [Restful API Best practices]()
+ - [RESTFul APIs Best practices]()
  - [Authentication]()
+ - [Caching]()
  
 ### What is the purpose of this document ?
 
-This document represents Farazpardazan restful api design strategy. It provides a brief overview of how we design our
-restful apis and provide them to our clients.
+This document represents an introduction to Http and REST. It provides a brief overview of Http Protocol, RESTFul API best practices, authentication and caching.
+
+
 ### introduction to HTTP protocol and REST
 
-we have craeted a [document](Http-Docs.md) specially for this purpose. you can read this document.
+The Hypertext Transfer Protocol (HTTP) is a stateless application-
+   level protocol for distributed, collaborative, hypertext information
+   systems. 
 
+   Each Hypertext Transfer Protocol (HTTP) message is either a request
+   or a response.  A server listens on a connection for a request,
+   parses each message received, interprets the message semantics in
+   relation to the identified request target, and responds to that
+   request with one or more response messages.  A client constructs
+   request messages to communicate specific intentions, examines
+   received responses to see if the intentions were carried out, and
+   determines how to interpret the results. 
+   
 ### Request Methods
-   Http protocol has 8 standard methods but in FarazPardazan we support these methods : 
-``` GET, POST, PUT, DELETE ```
+   This specification defines a number of standardized methods that are
+   commonly used in HTTP, as outlined by the following table.  By
+   convention, standardized methods are defined in all-uppercase
+   US-ASCII letters.
+```
+   +---------+-------------------------------------------------+-------+
+   | Method  | Description                                     | Sec.  |
+   +---------+-------------------------------------------------+-------+
+   | GET     | Transfer a current representation of the target | 4.3.1 |
+   |         | resource.                                       |       |
+   | HEAD    | Same as GET, but only transfer the status line  | 4.3.2 |
+   |         | and header section.                             |       |
+   | POST    | Perform resource-specific processing on the     | 4.3.3 |
+   |         | request payload.                                |       |
+   | PUT     | Replace all current representations of the      | 4.3.4 |
+   |         | target resource with the request payload.       |       |
+   | DELETE  | Remove all current representations of the       | 4.3.5 |
+   |         | target resource.                                |       |
+   | CONNECT | Establish a tunnel to the server identified by  | 4.3.6 |
+   |         | the target resource.                            |       |
+   | OPTIONS | Describe the communication options for the      | 4.3.7 |
+   |         | target resource.                                |       |
+   | TRACE   | Perform a message loop-back test along the path | 4.3.8 |
+   |         | to the target resource.                         |       |
+   +---------+-------------------------------------------------+-------+
+```
 #### GET
 
-GET method is used to retreive data from a server at the specified resource. 
+GET requests are the most common and widely used methods in APIs and websites. Simply put, the GET method is used to 
+retreive data from a server at the specified resource. For example, say you have an API with a /users endpoint.
+Making a GET request to that endpoint should return a list of all available users.
+
+Since a GET request is only requesting data and not modifying any resources,
+it's considered a safe and idempotent method.
+ - GET http://127.0.0.1:8081/api/v1/users
+ - GET http://127.0.0.1:8081/api/v1/users?page=0&size=20
+ - GET http://127.0.0.1:8081/api/v1/users/123/courses
     
+
 #### POST
-POST requests are used to send data to the API server to create or update a resource. 
+In web services, POST requests are used to send data to the API server to create or update a resource. 
 The data sent to the server is stored in the request body of the HTTP request.
-POST requests are non-idempotent. it mutates data on the backend server.
+
+The simplest example is a contact form on a website. When you fill out the inputs in a form and hit Send,
+that data is put in the request body and sent to the server. This may be JSON or query parameters 
+ (there's plenty of other formats, but these are the most common)
+ (here we use JSON format for request body and Query Params for simple filters).
+
+It's worth noting that a POST request is non-idempotent. 
+t mutates data on the backend server (by creating or updating a resource),
+ as opposed to a GET request which does not change any data. Here is a great explanation of idempotentcy.
 
 #### PUT 
 Similar to POST, PUT requests are used to send data to the API to update a resource. The difference is that
 PUT requests are idempotent. That is, calling the same PUT request multiple times will always produce the same result.
 In contrast, calling a POST request repeatedly make have side effects of creating the same resource multiple times.
 
+#### PATCH
+A PATCH request is one of the lesser-known HTTP methods, but I'm including it this high in the list since it is similar 
+to POST and PUT. The difference with PATCH is that you only apply partial modifications to the resource.
+
+The difference between PATCH and PUT, is that a PATCH request is non-idempotent (like a POST request).
+
+To expand on partial modification, say you're API has a /users/{{userid}} endpoint, and a user has a username. 
+With a PATCH request, you may only need to send the updated username in the request body - as opposed to POST 
+and PUT which require the full user entity.
+
 #### DELETE
-DELETE method is exactly as it sounds: delete the resource at the specified URL.
+DELETE method is exactly as it sounds: delete the resource at the specified URL. This method is one of the more common
+in RESTful APIs. so it's good to know how it works.
+
+If a new user is created with a POST request to /users, and it can be retrieved with a GET request to /users/{{user-id}},
+then making a DELETE request to /users/{{user-id}} will remove that user.
+#### HEAD
+The HEAD method is almost identical to GET, except without the response body. In other words, 
+if GET /users returns a list of users, then HEAD /users will make the same request but won't get back the list of users.
+
+HEAD requests are useful for checking what a GET request will return before actually making a GET request 
+-- like before downloading a large file or response body. 
+[Learn more about HEAD requests on MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/HEAD).
+
+#### OPTIONS
+OPTIONS request should return data describing what other methods and operations the server supports at the given URL.
+
+OPTIONS requests are more loosely defined and used than the others, making them a good candidate to test for fatal API 
+errors. If an API isn't expecting an OPTIONS request, it's good to put a test case in place that verifies 
+failing behavior.
+#### notes : by convention we use only GET, POST, PUT, DELETE, PATCH
 
 ### HTTP Status Codes
-  Http Protocol has 5 ranges of status codes. in each range, we support these codes :
+  Http Status codes are issued by a server in response to a client's request made to the server.
+  HTTP response status codes indicate whether a specific HTTP request has been successfully completed.
+  Responses are grouped in five classes:
 
+ - Informational responses 1XX
+ - Successful responses 2XX
+ - Redirects 3XX
+ - Client errors 4XX
+ - Server errors 5XX
+ By convention we use these Http status codes in our project and other codes are invalid.
+ 
 ### 1xx Informational
 we do not use any of 1XX response codes.
  
