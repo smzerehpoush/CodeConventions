@@ -3,7 +3,7 @@
 
 ## Table of content
  - [What is the purpose of this document?]()
- - [introduction to HTTP protocol and REST]()
+ - [Introduction to HTTP protocol and REST]()
     - [HTTP basics]()
     - [Request Methods]()
       - [GET]()
@@ -30,44 +30,44 @@ we have craeted a [document](Http-Docs.md) specially for this purpose. you can r
 ### Request Methods
    Http protocol has 8 standard methods but in FarazPardazan we support these methods : 
 ``` GET, POST, PUT, DELETE ```
-#### GET
+- #### GET
 
 GET method is used to retreive data from a server at the specified resource. 
     
-#### POST
+- #### POST
 POST requests are used to send data to the API server to create or update a resource. 
 The data sent to the server is stored in the request body of the HTTP request.
 POST requests are non-idempotent. it mutates data on the backend server.
 
-#### PUT 
+- #### PUT 
 Similar to POST, PUT requests are used to send data to the API to update a resource. The difference is that
 PUT requests are idempotent. That is, calling the same PUT request multiple times will always produce the same result.
 In contrast, calling a POST request repeatedly make have side effects of creating the same resource multiple times.
 
-#### DELETE
+- #### DELETE
 DELETE method is exactly as it sounds: delete the resource at the specified URL.
 
 ### HTTP Status Codes
   Http Protocol has 5 ranges of status codes. in each range, we support these codes :
 
-### 1xx Informational
+- ### 1xx Informational
 we do not use any of 1XX response codes.
  
-### 2xx Success
+- ### 2xx Success
  in rage of 2XX we use these codes : 200
  - #### 200 OK
   The request has succeeded. The meaning of the success depends on the HTTP method:
   - GET: The resource has been fetched and is transmitted in the message body.
   - HEAD: The entity headers are in the message body.
   - PUT or POST: The resource describing the result of the action is transmitted in the message body.
-### 3xx Redirection
+- ### 3xx Redirection
   in range of 3XX we use these codes : 302
    - #### 302 Found
 This response code means that the URI of requested resource has been changed temporarily.
  Further changes in the URI might be made in the future. Therefore, this same URI should be used by the client
   in future requests.
 
-### 4xx Client Error
+- ### 4xx Client Error
 in range of 4XXX we use these codes : 400, 401, 403, 404, 429
 
  - #### 400 Bad Request
@@ -95,7 +95,7 @@ must never be disabled and should not return this error code.
  - #### 429 Too Many Requests
 The user has sent too many requests in a given amount of time ("rate limiting").
 
-### 5xx Server Error
+- ### 5xx Server Error
 note that we can't return any code of range 5XX explicitly. 
 some error codes may be throw by web server like 502 , or 504
 
