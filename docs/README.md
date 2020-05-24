@@ -18,6 +18,7 @@
       - [5xx Server Error]()
  - [Restful API Best practices]()
  - [Authentication]()
+ - [Code Example](../root/src/main/java/com/mahdiyar/controller/UserController.java)
  
 ### What is the purpose of this document ?
 
