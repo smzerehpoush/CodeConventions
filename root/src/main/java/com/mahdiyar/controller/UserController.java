@@ -31,13 +31,13 @@ public class UserController {
                 .body(userService.create(requestDto));
     }
 
-    @ApiOperation("Read Users")
+    @ApiOperation("Get Users")
     @GetMapping
     public ResponseEntity<PagedQueryResponse<UserModel>> read(PagedQuery pagedQuery) {
         return ResponseEntity.ok(userService.read(pagedQuery));
     }
 
-    @ApiOperation("Read User")
+    @ApiOperation("Get User With ID")
     @GetMapping("/{id}")
     public ResponseEntity<UserModel> read(@PathVariable("id") String id) {
         return ResponseEntity.ok(userService.read(id));
