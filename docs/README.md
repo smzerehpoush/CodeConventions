@@ -26,7 +26,7 @@ This document represents Farazpardazan restful api design strategy. It provides 
 restful apis and provide them to our clients.
 ### introduction to HTTP protocol and REST
 
-we have craeted a [document](Http-Docs.md) specially for this purpose. you can read this document.
+we have craeted a [document](HTTP-Docs.md) specially for this purpose. you can read this document.
 
 ### Request Methods
    Http protocol has 8 standard methods but in FarazPardazan we support these methods : 
