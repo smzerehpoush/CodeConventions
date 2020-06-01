@@ -272,11 +272,12 @@ The API should always return sensible HTTP status codes. API errors typically br
 
 A JSON error body should provide a few things for the developer - a useful error message, a unique error code (that can be looked up for more details in the docs) and possibly a detailed description. JSON output representation for something like this would look like:
 
-```{
+```json{
   "code" : 1234,
   "message" : "Something bad happened :(",
   "description" : "More details about the error here"
-}```
+}
+```
 Validation errors for PUT, PATCH and POST requests will need a field breakdown. This is best modeled by using a fixed top-level error code for validation failures and providing the detailed errors in an additional ```errors``` field, like so:
 
 ```{
@@ -294,4 +295,5 @@ Validation errors for PUT, PATCH and POST requests will need a field breakdown. 
        "message" : "Password cannot be blank"
     }
   ]
-}```
+}
+```
