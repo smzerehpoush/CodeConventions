@@ -207,12 +207,14 @@ If you're using JSON (JavaScript Object Notation) as your primary representation
 #### Don't use an envelope by default, but make it possible when needed
 Many APIs wrap their responses in envelopes like this:
 
-```{
+```json {
   "data" : {
     "id" : 123,
     "name" : "John"
   }
-}```
+}
+```
+
 There are a couple of justifications for doing this - it makes it easy to include additional metadata or pagination information, some REST clients don't allow easy access to HTTP headers and JSONP requests have no access to HTTP headers. However, with standards that are being rapidly adopted like CORS and the Link header from RFC 5988, enveloping is starting to become unnecessary.
 
 #### Pagination
